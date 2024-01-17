@@ -1,12 +1,27 @@
-const todos=document.getElementById('todos')
-fetch('http://localhost:3000/')
-.then((response) => response.json())
-.then((data)=> {
-   for (i=0;i<data.length;i++){
-    const todo2= data[i]
-    const li2=document.createElement('li')
-    li2.innerHTML = todo2
-    todos.append(li2)
-   }
-    
+const express = require('express')
+var cors = require('cors')
+const app = express()
+const port = 3000
+
+app.use(cors())
+
+// For parsing application/json for taking body of a request
+app.use(express.json());
+
+const todos =[]
+
+app.get('/', (req, res) => {
+  res.json(todos)
+})
+app.post('/', (req, res) => {
+  const newtodos = (req.body.todo)
+  todos.push(newtodos)
+  res.json({ 
+    status:"success",
+    data: newtodos
+    })
+
+})
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
 })
